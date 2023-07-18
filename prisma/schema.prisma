@@ -9,3 +9,35 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  category  String     @unique
+  createdAt DateTime   @default(now())
+  Question  Question[]
+}
+
+model SubCategory {
+  id          Int        @id @default(autoincrement())
+  subCategory String     @unique
+  createdAt   DateTime   @default(now())
+  Question    Question[]
+}
+
+model Question {
+  id            Int         @id @default(autoincrement())
+  categoryId    Int
+  subCategoryId Int
+  question      String      @unique
+  answer        String
+  Category      Category    @relation(fields: [categoryId], references: [id])
+  SubCategory   SubCategory @relation(fields: [subCategoryId], references: [id])
+  createdAt     DateTime    @default(now())
+}
