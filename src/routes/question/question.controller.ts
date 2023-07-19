@@ -16,6 +16,7 @@ import { AuthGuard } from '../auth/auth.guard';
 @Controller('question')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
+
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() createQuestionDto: CreateQuestionDto) {

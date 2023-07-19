@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 
@@ -21,18 +21,49 @@ export class QuestionService {
   }
 
   findAll() {
-    return `This action returns all question`;
+    return this.PrismaService.question.findMany({});
   }
 
   findOne(id: number) {
     return `This action returns a #${id} question`;
   }
 
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
+  async update(id: number, updateQuestionDto: UpdateQuestionDto) {
+    const question = await this.PrismaService.question.findFirst({
+      where: {
+        id,
+      },
+    });
+    if (!question)
+      throw new HttpException('question not found', HttpStatus.BAD_REQUEST);
+
+    const questionAlreadyExist = await this.PrismaService.question.findUnique({
+      where: {
+        question: updateQuestionDto.question,
+      },
+    });
+    if (questionAlreadyExist)
+      throw new HttpException('Question already exist', HttpStatus.CONFLICT);
+    return this.PrismaService.question.update({
+      data: updateQuestionDto,
+      where: {
+        id,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+  async remove(id: number) {
+    const question = await this.PrismaService.question.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!question)
+      throw new HttpException('question not found', HttpStatus.BAD_REQUEST);
+    return this.PrismaService.question.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
