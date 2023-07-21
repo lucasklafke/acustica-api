@@ -18,29 +18,21 @@ model User {
 }
 
 model Category {
-  id          Int           @id @default(autoincrement())
-  category    String        @unique
-  createdAt   DateTime      @default(now())
-  Question    Question[]
-  SubCategory SubCategory[]
-}
+  id               Int       @id @default(autoincrement())
+  category         String    @unique
+  createdAt        DateTime  @default(now())
+  parentId         Int?      @map("parentId")
 
-model SubCategory {
-  id          Int        @id @default(autoincrement())
-  subCategory String     @unique
-  createdAt   DateTime   @default(now())
-  categoryId  Int
-  Category    Category   @relation(fields: [categoryId], references: [id])
-  Question    Question[]
+  ParentCategories Category? @relation("SubCategories", fields: [parentId], references: [id])
+  SubCategories Category[] @relation("SubCategories")
+  Question      Question[]
 }
 
 model Question {
-  id            Int         @id @default(autoincrement())
-  categoryId    Int
-  subCategoryId Int
-  question      String      @unique
-  answer        String
-  Category      Category    @relation(fields: [categoryId], references: [id])
-  SubCategory   SubCategory @relation(fields: [subCategoryId], references: [id])
-  createdAt     DateTime    @default(now())
+  id         Int      @id @default(autoincrement())
+  categoryId Int
+  question   String   @unique
+  answer     String
+  Category   Category @relation(fields: [categoryId], references: [id])
+  createdAt  DateTime @default(now())
 }

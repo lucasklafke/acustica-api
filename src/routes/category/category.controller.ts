@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -21,8 +22,12 @@ export class CategoryController {
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  findAll(@Query('main') main: boolean, @Query('all') all: boolean) {
+    const filter = {
+      main,
+      all,
+    };
+    return this.categoryService.findAll(filter);
   }
 
   @Get(':id')

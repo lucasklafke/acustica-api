@@ -25,7 +25,11 @@ export class QuestionService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} question`;
+    return this.PrismaService.question.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
   async update(id: number, updateQuestionDto: UpdateQuestionDto) {
@@ -42,7 +46,7 @@ export class QuestionService {
         question: updateQuestionDto.question,
       },
     });
-    if (questionAlreadyExist)
+    if (questionAlreadyExist && questionAlreadyExist.id !== question.id)
       throw new HttpException('Question already exist', HttpStatus.CONFLICT);
     return this.PrismaService.question.update({
       data: updateQuestionDto,

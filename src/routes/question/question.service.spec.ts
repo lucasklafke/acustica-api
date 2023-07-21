@@ -51,7 +51,6 @@ describe('QuestionService', () => {
         answer: 'testing',
         categoryId: 1,
         question: 'testing',
-        subCategoryId: 1,
       };
       const question = await service.create(createQuestionDto);
       expect(question).toEqual({
@@ -80,7 +79,6 @@ describe('QuestionService', () => {
         answer: 'testing',
         categoryId: 1,
         question: 'testing',
-        subCategoryId: 1,
       };
       try {
         const question = await service.create(createQuestionDto);
