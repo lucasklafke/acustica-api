@@ -12,10 +12,10 @@ export type User = {
 export class UsersService {
   constructor(private readonly PrismaService: PrismaService) {}
 
-  async findOne(id: number) {
+  async findOne(username: string) {
     return this.PrismaService.user.findUnique({
       where: {
-        id,
+        username,
       },
     });
   }

@@ -29,6 +29,7 @@ export class CategoryService {
       });
     }
     if (filters.all) return this.PrismaService.category.findMany({});
+
     const categories = await this.PrismaService.category.findMany({});
     const questions = await this.PrismaService.question.findMany({});
     return buildCategoryTree(categories, questions);

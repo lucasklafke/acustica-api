@@ -21,7 +21,7 @@ model Category {
   id               Int       @id @default(autoincrement())
   category         String    @unique
   createdAt        DateTime  @default(now())
-  parentId         Int?      @map("parentId")
+  parentId         Int?     @map("parentId")
 
   ParentCategories Category? @relation("SubCategories", fields: [parentId], references: [id])
   SubCategories Category[] @relation("SubCategories")
