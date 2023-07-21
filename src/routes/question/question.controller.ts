@@ -16,7 +16,7 @@ import { AuthGuard } from '../auth/auth.guard';
 @Controller('question')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
-
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createQuestionDto: CreateQuestionDto) {
     return this.questionService.create(createQuestionDto);
@@ -31,7 +31,7 @@ export class QuestionController {
   findOne(@Param('id') id: string) {
     return this.questionService.findOne(+id);
   }
-
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -39,7 +39,7 @@ export class QuestionController {
   ) {
     return this.questionService.update(+id, updateQuestionDto);
   }
-
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.questionService.remove(+id);
